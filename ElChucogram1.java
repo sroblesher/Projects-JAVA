@@ -1,14 +1,3 @@
-/* CS1101 – Intro to Computer Science
-Instructor: Akbar
-Comprehensive Lab 2
-By including my name below, I confirm that:
--	I am submitting my original work.
--	If I include code obtained from another source or I received help I am giving attribution to those sources as comments.
--	This submission does not incur in any academic dishonesty practice as described in the course syllabus.
-Modified and submitted by: Salvador Robles Herrera
-*/
-
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -19,11 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
@@ -37,7 +24,7 @@ import javax.swing.JRadioButton;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class ElChucogram {
+public class ElChucogram1 {
 
     // *-*-*-*-*-*-*-*-*-*-*-*-
     // Ignore this part
@@ -51,7 +38,7 @@ public class ElChucogram {
     private static boolean recording = false;
     private static String recordingFileName = null;
 
-    private enum Effect { LIQUIFY, TWIST_LEFT, TWIST_RIGHT, PINCH, BULGE };
+    private enum Effect { LIQUIFY, TWIST_LEFT, TWIST_RIGHT, PINCH, BULGE; }
     private static Effect currentEffect = Effect.LIQUIFY;
     // *-*-*-*-*-*-*-*-*-*-*-*-
     // Ignore this part
@@ -272,26 +259,11 @@ public class ElChucogram {
      * @param filePath Path to the file that contains the instructions
      *
      */
-    private static void executeFileInstructions(String filePath) throws FileNotFoundException {
+    private static void executeFileInstructions(String filePath) {
         // Add your code here
-        Scanner scnr = new Scanner(new File(filePath));
 
-        while(scnr.hasNextLine())   //Do for every line in the File
-        {
-            String a = scnr.nextLine();
-            String arr[] = a.split(" ");    //Separate instruction to strings
+        //while (Text File.hasNext)
 
-            if (arr[0].equals("LIQUIFY"))
-                liquifyEffect(workingImage,Integer.parseInt(arr[1]),Integer.parseInt(arr[2]),Integer.parseInt(arr[3]),Integer.parseInt(arr[4]), normFactor);
-            else if (arr[0].equals("TWIST_LEFT"))
-                twistLeftEffect(workingImage, Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), normFactor);
-            else if (arr[0].equals("TWIST_RIGHT"))
-                twistRightEffect(workingImage, Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), normFactor);
-            else if (arr[0].equals("PINCH"))
-                pinchEffect(workingImage, Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), normFactor);
-            else if (arr[0].equals("BULGE"))
-                bulgeEffect(workingImage, Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), normFactor);
-        }
     }
 
     /**
@@ -301,19 +273,8 @@ public class ElChucogram {
      * @param effectName	One of the following: LIQUIFY, TWIST_LEFT, TWIST_RIGHT, PINCH, BULGE
      * @param effectParams	Effect parameters
      */
-    private static void appendOperationToFile(String filePath, String effectName, int[] effectParams) throws IOException {
+    private static void appendOperationToFile(String filePath, String effectName, int[] effectParams) {
         // Add your code here
-        //With help of:
-        //https://stackoverflow.com/questions/2885173/how-do-i-create-a-file-and-write-to-it-in-java
-        FileWriter fw = new FileWriter(filePath, true);     //Write data to selected File
-        fw.write(effectName);
-        for (int i = 0 ; i < effectParams.length; i++)  //Until all parameters are written in File
-        {
-            fw.write(" " + effectParams[i]);
-        }
-        fw.write("\n");
-        fw.close();
-
     }
 
     /**
@@ -321,11 +282,8 @@ public class ElChucogram {
      * Hint: the global variable workingImage holds the pixel values of the image that needs to be saved
      */
     protected static void saveImageClicked() {
-        //JOptionPane.showMessageDialog(frame, "How do you want to name the picture?");
+        JOptionPane.showMessageDialog(frame, "Extra Credit: Implement this feature");
         // Add your code here
-        String fileName = JOptionPane.showInputDialog(frame, "Type the name of the picture:");
-
-        saveImage(workingImage, fileName);  // Save current image with name selected by user
     }
 
 
@@ -358,11 +316,7 @@ public class ElChucogram {
             public void mouseExited(MouseEvent me) { }
             public void mouseClicked(MouseEvent me) {
                 if(me.getButton() == MouseEvent.BUTTON1) {
-                    try {
-                        imageClicked(me.getY(), me.getX());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    imageClicked(me.getY(), me.getX());
                 }
             }
         });
@@ -426,7 +380,7 @@ public class ElChucogram {
      * @param row row where the image was clicked
      * @param col col where the image was clicked
      */
-    private static void imageClicked(int row, int col) throws IOException{
+    private static void imageClicked(int row, int col) {
 
         int[] params = {row, col};
         switch(currentEffect) {
@@ -483,7 +437,7 @@ public class ElChucogram {
      * Display a GUI component to select a text file where
      * the set of effect instructions is stored.
      */
-    private static void executeFromFileButtonClicked(){
+    private static void executeFromFileButtonClicked() {
         FileFilter textFilter = new FileNameExtensionFilter(
                 "Text Files", "txt");
         JFileChooser fc = new JFileChooser();
@@ -494,14 +448,6 @@ public class ElChucogram {
             File file = fc.getSelectedFile();
             //This is where a real application would open the file.
             System.out.println("Opening: " + file.getAbsolutePath() + "." );
-
-
-        //added BY MEEEE
-            try {
-                executeFileInstructions(file.getAbsolutePath());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
         }
     }
 
